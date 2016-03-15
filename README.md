@@ -1,3 +1,4 @@
-# NeoinoIDE
+Daruin
+====
 
-新しいArduino IDE
+A Powerfull IDE for Arduino made by Qt(WIP)
