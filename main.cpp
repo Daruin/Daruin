@@ -9,6 +9,8 @@ int main(int argc , char** argv){
 	daruin->move(300 , 100);
 	daruin->show();
 
+	QObject::connect(daruin , SIGNAL(quit()) , app , SLOT(quit()));
+
 	app->exec();
 
 	delete daruin;
