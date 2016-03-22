@@ -13,6 +13,9 @@ class QVBoxLayout;
 class QLabel;
 class QLineEdit;
 class QPushButton;
+class QFile;
+class QTextCodec;
+class QTextStream;
 
 class Daruin : public QMainWindow
 {
@@ -46,6 +49,7 @@ private:
 	QMenuBar* menubar;
     QMenu* fileMenu;
 	QString* str;
+    QString* fileName;
 
 	QDialog* dialog;
 	QHBoxLayout* layout_h;
@@ -55,8 +59,9 @@ private:
     QPushButton* yesButton;
     QPushButton* noButton;
     QPushButton* cancelButton;
+    QFile* currentFile;
+    QTextCodec* textCodec;
 
-    char* fileName;
     char fileState;
 
     bool saveState;

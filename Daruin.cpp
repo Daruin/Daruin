@@ -8,6 +8,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QTextCodec>
+#include <QFile>
+#include <QTextStream>
 #include <stdio.h>//This library is needed only during debug
 
 Daruin::Daruin(void)
@@ -25,9 +28,9 @@ Daruin::Daruin(void)
     yesButton = new QPushButton;
     noButton = new QPushButton("no");
     cancelButton = new QPushButton("cancel");
+    textCodec = QTextCodec::codecForLocale();
 
-    fileName = new char[50];//I will modify "[50]" in the future.
-    fileName[0] = '\0';
+    fileName = new QString("");
     fileState = '\0';
     changeState = false;
     saveState = true;
@@ -73,13 +76,17 @@ void Daruin::change(void)
 
 void Daruin::displayAskSaveDialog(void)
 {
-    yesButton->setText("yes");
-    label->setText("you haven't save this file yet.\nwill you save?");
-    lineedit->hide();
-    noButton->show();
-    connect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithSave()));
-    dialog->move(500 , 300);
-    dialog->show();
+    if(changeState){
+        yesButton->setText("yes");
+        label->setText("you haven't save this file yet.\nwill you save?");
+        lineedit->hide();
+        noButton->show();
+        connect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithSave()));
+        dialog->move(500 , 300);
+        dialog->show();
+    } else {
+        openFile();
+    }
 }
 
 void Daruin::openNewFile(void)
@@ -102,18 +109,18 @@ void Daruin::openFile(void)
 
     switch(fileState){
         case 'n' : {
-            if(saveState) {
-                saveFile();
+            if(saveState) saveFile();
+            if(saveState){
                 soState = 'n';
             }else {
                 textEditor->clear();
-                fileName[0] = '\0';
+                fileName = new QString("");
             }
             break;
         }
         case 'e' : {
+            if(saveState) saveFile();
             if(saveState) {
-                saveFile();
                 soState = 'e';
             } else {
                 displayAskFileNameDialog();
@@ -153,61 +160,35 @@ void Daruin::displayAskFileNameDialog(void)
 
 void Daruin::openFileWithName(void)
 {
-    FILE* fp;
-    short word_num;
 
     str->clear();
     *str = lineedit->text();
-    word_num = str->size();
+    fileName = str;
 
-    for(short i = 0  ;  i < word_num  ;  i++){
-        fileName[i] = (str->at(i)).unicode();
-    }
-    fileName[word_num] = '\0';
-
-    fp = fopen(fileName , "r");
-
-    if(fp != NULL){
-        char ch;
-
-        str->clear();
-
-        while(1){
-            ch = fgetc(fp);
-            if(ch != EOF)
-                str->append(QChar::fromLatin1(ch));
-            else
-                break;
-        }
-        textEditor->setPlainText(*str);
-        fclose(fp);
-    }else{
-        printf("fail to open this file\n");
+    currentFile = new QFile(*fileName);
+    if(currentFile->open(QIODevice::ReadOnly)){
+        QTextStream in(currentFile);
+        QString str;
+        in >> str;
+        textEditor->setPlainText(str);
+    } else {
+        printf("Error: Can't open file");
     }
     close_dialog();
 }
 
 void Daruin::saveFile(void)
 {
-    if(fileName[0]){
+    if(fileName != QLatin1String("")){
         printf("save_normal\n");
-        FILE* fp = fopen(fileName , "w");
-
-        if(fp != NULL){
-            int word_num;
-
-            *str = textEditor->toPlainText();
-            word_num = str->size();
-
-            for(int i = 0  ;  i < word_num  ;  i++){
-                fputc((str->at(i)).unicode() , fp);
-            }
-
-            fclose(fp);
-            changeState = false;
+        currentFile = new QFile(*fileName);
+        if(currentFile->open(QIODevice::ReadWrite | QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream stream(currentFile);
+            stream << textEditor->toPlainText();
             saveState = false;
-        }else{
-            printf("I cannot write on this file.\n");
+            changeState = false;
+        } else {
+            printf("Error : Cannot Open File");
         }
     }else{
         displayAskSaveFileNameDialog();
@@ -230,16 +211,10 @@ void Daruin::displayAskSaveFileNameDialog(void)
 
 void Daruin::saveFileWithName(void)
 {
-    short word_num;
-
     str->clear();
     *str = lineedit->text();
-    word_num = str->size();
+    fileName = str;
 
-    for(short i = 0  ;  i < word_num  ;  i++){
-        fileName[i] = (str->at(i)).unicode();
-    }
-    fileName[word_num] = '\0';
 
     saveFile();
 
@@ -247,7 +222,7 @@ void Daruin::saveFileWithName(void)
     case 'n' : {
         close_dialog();
         textEditor->clear();
-        fileName[0] = '\0';
+        fileName = new QString("");
         break;
     }
     case 'e' : {
