@@ -11,10 +11,10 @@ class QDialog;
 class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
-class QLineEdit;
 class QPushButton;
 class QFile;
 class QTextStream;
+class QFileDialog;
 
 class Daruin : public QMainWindow
 {
@@ -27,15 +27,14 @@ signals:
 	void quit(void);
 
 public slots:
-	void call(void);
+    void call(void);
 	void change(void);
     void openExistedFile(void);
     void openNewFile(void);
     void openFileWithSave(void);
     void openFileWithoutSave(void);
-    void openFileWithName(void);
+    void openFileWithName(QString name);
     void saveFile(void);
-    void displayAskSaveFileNameDialog(void);
     void saveFileWithName(void);
 	void close_dialog(void);
 
@@ -50,11 +49,11 @@ private:
 	QString* str;
     QString* fileName;
 
+    QFileDialog* fileDialog;
 	QDialog* dialog;
 	QHBoxLayout* layout_h;
 	QVBoxLayout* layout_v;
 	QLabel* label;
-	QLineEdit* lineedit;
     QPushButton* yesButton;
     QPushButton* noButton;
     QPushButton* cancelButton;

@@ -6,10 +6,10 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QFile>
 #include <QTextStream>
+#include <QFileDialog>
 #include <stdio.h>//This library is needed only during debug
 
 Daruin::Daruin(void)
@@ -23,21 +23,20 @@ Daruin::Daruin(void)
     layout_h = new QHBoxLayout;
     layout_v = new QVBoxLayout;
     label = new QLabel;
-    lineedit = new QLineEdit;
     yesButton = new QPushButton;
     noButton = new QPushButton("no");
     cancelButton = new QPushButton("cancel");
+    fileDialog = new QFileDialog();
 
     fileName = new QString("");
     fileState = '\0';
     changeState = false;
-    saveState = true;
+    saveState = false;
 
     setCentralWidget(textEditor);
     menubar->addMenu(fileMenu);
     setMenuBar(menubar);
 
-    layout_h->addWidget(lineedit);
     layout_h->addWidget(yesButton);
     layout_h->addWidget(noButton);
     layout_h->addWidget(cancelButton);
@@ -49,7 +48,7 @@ Daruin::Daruin(void)
     connect(fileMenu->addAction("new file") , SIGNAL(triggered()) , this , SLOT(openNewFile()));
     connect(fileMenu->addAction("open file") , SIGNAL(triggered()) , this , SLOT(openExistedFile()));
     connect(fileMenu->addAction("save file") , SIGNAL(triggered()) , this , SLOT(saveFile()));
-    connect(fileMenu->addAction("save file with naming") , SIGNAL(triggered()) , this , SLOT(displayAskSaveFileNameDialog()));
+    connect(fileMenu->addAction("save file with naming") , SIGNAL(triggered()) , this , SLOT(saveFileWithName()));
     connect(fileMenu->addAction("quit") , SIGNAL(triggered()) , this , SIGNAL(quit()));
 
     connect(menubar->addAction("compile") , SIGNAL(triggered()) , this , SLOT(call()));
@@ -77,7 +76,6 @@ void Daruin::displayAskSaveDialog(void)
     if(changeState){
         yesButton->setText("yes");
         label->setText("you haven't save this file yet.\nwill you save?");
-        lineedit->hide();
         noButton->show();
         connect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithSave()));
         dialog->move(500 , 300);
@@ -146,29 +144,16 @@ void Daruin::displayAskFileNameDialog(void)
 {
     printf("open essentially\n");
     fileState = 'o';
-    yesButton->setText("open");
-    lineedit->setText("");
-    label->setText("please input the name of file which you want to open");
-    lineedit->show();
-    noButton->hide();
-    connect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithName()));
-    dialog->move(500 , 300);
-    dialog->show();
+    fileDialog->show();
+    connect(fileDialog,SIGNAL(fileSelected(QString)),this,SLOT(openFileWithName(QString)));
 }
 
-void Daruin::openFileWithName(void)
+void Daruin::openFileWithName(QString name)
 {
-
-    str->clear();
-    *str = lineedit->text();
-    fileName = str;
-
-    currentFile = new QFile(*fileName);
+    currentFile = new QFile(name);
     if(currentFile->open(QIODevice::ReadOnly)){
         QTextStream in(currentFile);
-        QString str;
-        in >> str;
-        textEditor->setPlainText(str);
+        textEditor->setPlainText(in.readAll());
     } else {
         printf("Error: Can't open file");
     }
@@ -189,49 +174,30 @@ void Daruin::saveFile(void)
             printf("Error : Cannot Open File");
         }
     }else{
-        displayAskSaveFileNameDialog();
+        saveFileWithName();
     }
 }
 
-void Daruin::displayAskSaveFileNameDialog(void)
+void Daruin::saveFileWithName()
 {
-    printf("save_name\n");
-    fileState = 's';
-    yesButton->setText("save");
-    lineedit->setText("");
-    label->setText("please input the name of file which you want to write on");
-    lineedit->show();
-    noButton->hide();
-    connect(yesButton , SIGNAL(clicked()) , this , SLOT(saveFileWithName()));
-    dialog->move(500 , 300);
-    dialog->show();
-}
-
-void Daruin::saveFileWithName(void)
-{
-    str->clear();
-    *str = lineedit->text();
-    fileName = str;
-
-
-    saveFile();
-
-    switch(soState){
-    case 'n' : {
+    *fileName = QFileDialog::getSaveFileName();
+    if(*fileName != NULL){
+        saveFile();
         close_dialog();
-        textEditor->clear();
-        fileName = new QString("");
-        break;
-    }
-    case 'e' : {
-        close_dialog();
-        displayAskFileNameDialog();
-        break;
-    }
-    default  : {
-        close_dialog();
-        break;
-    }
+        switch(soState){
+            case 'n' : {
+                textEditor->clear();
+                fileName = new QString("");
+                break;
+            }
+            case 'e' : {
+                displayAskFileNameDialog();
+                break;
+            }
+            default  : {
+                break;
+            }
+        }
     }
 }
 
@@ -240,8 +206,8 @@ void Daruin::close_dialog(void)
     switch(fileState){
     case 'e' :
     case 'n' : disconnect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithSave()));	break;
-    case 'o' : disconnect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithName()));		break;
-    case 's' : disconnect(yesButton , SIGNAL(clicked()) , this , SLOT(saveFileWithName()));	break;
+    case 'o' : disconnect(fileDialog , SIGNAL(fileSelected(QString)) , this , SLOT(openFileWithName(QString)));		break;
+    case 's' : disconnect(fileDialog , SIGNAL(fileSelected(QString)) , this , SLOT(saveFileWithName(QString)));	break;
     }
     dialog->hide();
     soState = '\0';
