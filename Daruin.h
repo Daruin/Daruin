@@ -27,22 +27,22 @@ signals:
 public slots:
 	void call(void);
 	void change(void);
-	void open1_exist(void);
-	void open1_new(void);
-	void open2_yes(void);
-	void open2_no(void);
-	void open4(void);
-	void save(void);
-	void save_name1(void);
-	void save_name2(void);
+    void openExistedFile(void);
+    void openNewFile(void);
+    void openFileWithSave(void);
+    void openFileWithoutSave(void);
+    void openFileWithName(void);
+    void saveFile(void);
+    void displayAskSaveFileNameDialog(void);
+    void saveFileWithName(void);
 	void close_dialog(void);
 
 private:
-	void open1(void);
-	void open2(void);
-	void open3(void);
+    void displayAskSaveDialog(void);
+    void openFile(void);
+    void displayAskFileNameDialog(void);
 
-	QTextEdit* text;
+    QTextEdit* textEditor;
 	QMenuBar* menubar;
     QMenu* fileMenu;
 	QString* str;
@@ -58,6 +58,7 @@ private:
 
     char* fileName;
     char fileState;
+
     bool saveState;
     char soState;
     bool changeState;
