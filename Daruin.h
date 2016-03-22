@@ -44,7 +44,7 @@ private:
 
 	QTextEdit* text;
 	QMenuBar* menubar;
-	QMenu* menuF;
+    QMenu* fileMenu;
 	QString* str;
 
 	QDialog* dialog;
@@ -52,15 +52,15 @@ private:
 	QVBoxLayout* layout_v;
 	QLabel* label;
 	QLineEdit* lineedit;
-	QPushButton* button_yes;
-	QPushButton* button_no;
-	QPushButton* button_can;
+    QPushButton* yesButton;
+    QPushButton* noButton;
+    QPushButton* cancelButton;
 
-	char* file_name;
-	char file_state;
-	bool save_state;
-	char so_state;
-	bool change_state;
+    char* fileName;
+    char fileState;
+    bool saveState;
+    char soState;
+    bool changeState;
 };
 
 #endif
