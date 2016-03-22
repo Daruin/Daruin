@@ -8,7 +8,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QTextCodec>
 #include <QFile>
 #include <QTextStream>
 #include <stdio.h>//This library is needed only during debug
@@ -28,7 +27,6 @@ Daruin::Daruin(void)
     yesButton = new QPushButton;
     noButton = new QPushButton("no");
     cancelButton = new QPushButton("cancel");
-    textCodec = QTextCodec::codecForLocale();
 
     fileName = new QString("");
     fileState = '\0';

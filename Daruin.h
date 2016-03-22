@@ -14,7 +14,6 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 class QFile;
-class QTextCodec;
 class QTextStream;
 
 class Daruin : public QMainWindow
@@ -60,7 +59,6 @@ private:
     QPushButton* noButton;
     QPushButton* cancelButton;
     QFile* currentFile;
-    QTextCodec* textCodec;
 
     char fileState;
 
