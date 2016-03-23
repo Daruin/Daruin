@@ -165,7 +165,7 @@ void Daruin::saveFile(void)
     if(fileName != QLatin1String("")){
         printf("save_normal\n");
         currentFile = new QFile(*fileName);
-        if(currentFile->open(QIODevice::ReadWrite | QIODevice::WriteOnly | QIODevice::Text)){
+        if(currentFile->open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream stream(currentFile);
             stream << textEditor->toPlainText();
             saveState = false;
