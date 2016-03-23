@@ -36,7 +36,6 @@ public slots:
     void openFileWithName(QString name);
     void saveFile(void);
     void saveFileWithName(void);
-	void close_dialog(void);
 
 private:
     void displayAskSaveDialog(void);
@@ -46,7 +45,6 @@ private:
     QTextEdit* textEditor;
 	QMenuBar* menubar;
     QMenu* fileMenu;
-	QString* str;
     QString* fileName;
 
     QFileDialog* fileDialog;
@@ -60,9 +58,6 @@ private:
     QFile* currentFile;
 
     char fileState;
-
-    bool saveState;
-    char soState;
     bool changeState;
 };
 
