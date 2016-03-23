@@ -9,4 +9,4 @@ INCLUDEPATH += .
 # Input
 HEADERS += Daruin.h
 SOURCES += Daruin.cpp main.cpp
-QT += widgets
+QT += widgets core
