@@ -11,7 +11,6 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include <stdio.h>//This library is needed only during debug
-#include <iostream>//
 
 Daruin::Daruin(void)
 {
