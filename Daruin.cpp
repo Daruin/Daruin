@@ -69,6 +69,7 @@ void Daruin::call(void)
 void Daruin::change(void)
 {
     changeState = true;
+    setWindowTitle("Daruin -" + *fileName + "*");
 }
 
 void Daruin::displayAskSaveDialog(void)
@@ -143,6 +144,7 @@ void Daruin::openFileWithName(QString name)
     } else {
         printf("Error: Can't open file");
     }
+    setWindowTitle("Daruin - " + *fileName);
     fileDialog->hide();
     delete currentFile;
 }
@@ -159,6 +161,7 @@ void Daruin::saveFile(void)
         } else {
             printf("Error : Cannot Open File");
         }
+        setWindowTitle("Daruin - " + *fileName);
         delete currentFile;
     }else{
         saveFileWithName();
