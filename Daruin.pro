@@ -7,6 +7,8 @@ TARGET = Daruin
 INCLUDEPATH += .
 
 # Input
-HEADERS += Daruin.h
-SOURCES += Daruin.cpp main.cpp
+HEADERS += Daruin.h \
+    buildwindow.h
+SOURCES += Daruin.cpp main.cpp \
+    buildwindow.cpp
 QT += widgets core

@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include "buildwindow.h"
 #include <stdio.h>//This library is needed only during debug
 
 Daruin::Daruin(void)
@@ -30,6 +31,8 @@ Daruin::Daruin(void)
     fileName = new QString("");
     fileState = '\0';
     changeState = false;
+
+    buildWindow = new BuildWindow();
 
     setCentralWidget(textEditor);
     menubar->addMenu(fileMenu);
@@ -59,6 +62,7 @@ Daruin::Daruin(void)
     connect(noButton , SIGNAL(clicked()) , this , SLOT(openFileWithoutSave()));
 	connect(cancelButton , SIGNAL(clicked()) , dialog , SLOT(hide()));
     connect(fileDialog,SIGNAL(fileSelected(QString)),this,SLOT(openFileWithName(QString)));
+    printf("test");
 }
 
 void Daruin::call(void)
