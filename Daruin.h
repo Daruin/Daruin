@@ -38,6 +38,7 @@ public slots:
     void openFileWithName(QString name);
     void saveFile(void);
     void saveFileWithName(void);
+    void callBuilder(void);
 
 private:
     void displayAskSaveDialog(void);

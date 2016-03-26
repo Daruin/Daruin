@@ -52,7 +52,7 @@ Daruin::Daruin(void)
     connect(fileMenu->addAction("save file with naming") , SIGNAL(triggered()) , this , SLOT(saveFileWithName()));
     connect(fileMenu->addAction("quit") , SIGNAL(triggered()) , this , SIGNAL(quit()));
 
-    connect(menubar->addAction("compile") , SIGNAL(triggered()) , this , SLOT(call()));
+    connect(menubar->addAction("compile") , SIGNAL(triggered()) , this , SLOT(callBuilder()));
     connect(menubar->addAction("upload") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("board") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("serial monitor") , SIGNAL(triggered()) , this , SLOT(call()));
@@ -62,7 +62,6 @@ Daruin::Daruin(void)
     connect(noButton , SIGNAL(clicked()) , this , SLOT(openFileWithoutSave()));
 	connect(cancelButton , SIGNAL(clicked()) , dialog , SLOT(hide()));
     connect(fileDialog,SIGNAL(fileSelected(QString)),this,SLOT(openFileWithName(QString)));
-    printf("test");
 }
 
 void Daruin::call(void)
@@ -179,4 +178,8 @@ void Daruin::saveFileWithName(void)
     if(*fileName != NULL){
         saveFile();
     }
+}
+
+void Daruin::callBuilder(void){
+    buildWindow->show();
 }

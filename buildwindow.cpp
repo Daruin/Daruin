@@ -11,6 +11,7 @@ BuildWindow::BuildWindow()
     buildButton = new QPushButton("Build");
 
     selectorLayout = new QHBoxLayout;
+    mainLayout = new QVBoxLayout;
     selectorLayout->addWidget(boardSelector);
     selectorLayout->addWidget(serialPortSelector);
     mainLayout->addLayout(selectorLayout);
