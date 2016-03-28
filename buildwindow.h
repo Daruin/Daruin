@@ -14,11 +14,17 @@ class BuildWindow : public QWidget
 public:
     BuildWindow();
 
+private slots:
+    void Compile();
+    void Build();
+
 private:
     QComboBox* boardSelector;
     QComboBox* serialPortSelector;
+    QPushButton* compileButton;
     QPushButton* buildButton;
     QHBoxLayout* selectorLayout;
+    QHBoxLayout* buttonLayout;
     QVBoxLayout* mainLayout;
 
 };
