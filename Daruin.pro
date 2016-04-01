@@ -9,8 +9,10 @@ INCLUDEPATH += .
 # Input
 HEADERS += Daruin.h \
     buildwindow.h \
-    ArduinoBuilderWrapper.h
+    ArduinoBuilderWrapper.h \
+    SettingWindow.h
 SOURCES += Daruin.cpp main.cpp \
     buildwindow.cpp \
-    ArduinoBuilderWrapper.cpp
+    ArduinoBuilderWrapper.cpp \
+    SettingWindow.cpp
 QT += widgets core
