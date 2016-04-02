@@ -6,7 +6,6 @@
 
 class ArduinoBuilderWrapper
 {
-    Q_OBJECT
 public:
     ArduinoBuilderWrapper();
 };
