@@ -2,6 +2,7 @@
 #define DARUIN_H
 
 #include <QMainWindow>
+#include "buildwindow.h"
 
 class QTextEdit;
 class QMenuBar;
@@ -15,6 +16,7 @@ class QPushButton;
 class QFile;
 class QTextStream;
 class QFileDialog;
+class BuildWindow;
 
 class Daruin : public QMainWindow
 {
@@ -36,6 +38,7 @@ public slots:
     void openFileWithName(QString name);
     void saveFile(void);
     void saveFileWithName(void);
+    void callBuilder(void);
 
 private:
     void displayAskSaveDialog(void);
@@ -56,6 +59,7 @@ private:
     QPushButton* noButton;
     QPushButton* cancelButton;
     QFile* currentFile;
+    BuildWindow* buildWindow;
 
     char fileState;
     bool changeState;

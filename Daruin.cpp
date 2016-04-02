@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include "buildwindow.h"
 #include <stdio.h>//This library is needed only during debug
 
 Daruin::Daruin(void)
@@ -31,6 +32,8 @@ Daruin::Daruin(void)
     fileState = '\0';
     changeState = false;
 
+    buildWindow = new BuildWindow();
+
     setCentralWidget(textEditor);
     menubar->addMenu(fileMenu);
     setMenuBar(menubar);
@@ -49,7 +52,7 @@ Daruin::Daruin(void)
     connect(fileMenu->addAction("save file with naming") , SIGNAL(triggered()) , this , SLOT(saveFileWithName()));
     connect(fileMenu->addAction("quit") , SIGNAL(triggered()) , this , SIGNAL(quit()));
 
-    connect(menubar->addAction("compile") , SIGNAL(triggered()) , this , SLOT(call()));
+    connect(menubar->addAction("compile") , SIGNAL(triggered()) , this , SLOT(callBuilder()));
     connect(menubar->addAction("upload") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("board") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("serial monitor") , SIGNAL(triggered()) , this , SLOT(call()));
@@ -69,6 +72,7 @@ void Daruin::call(void)
 void Daruin::change(void)
 {
     changeState = true;
+    setWindowTitle("Daruin -" + *fileName + "*");
 }
 
 void Daruin::displayAskSaveDialog(void)
@@ -143,6 +147,7 @@ void Daruin::openFileWithName(QString name)
     } else {
         printf("Error: Can't open file");
     }
+    setWindowTitle("Daruin - " + *fileName);
     fileDialog->hide();
     delete currentFile;
 }
@@ -159,6 +164,7 @@ void Daruin::saveFile(void)
         } else {
             printf("Error : Cannot Open File");
         }
+        setWindowTitle("Daruin - " + *fileName);
         delete currentFile;
     }else{
         saveFileWithName();
@@ -172,4 +178,8 @@ void Daruin::saveFileWithName(void)
     if(*fileName != NULL){
         saveFile();
     }
+}
+
+void Daruin::callBuilder(void){
+    buildWindow->show();
 }
