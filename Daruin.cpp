@@ -11,6 +11,7 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include "buildwindow.h"
+#include "SettingWindow.h"
 #include <stdio.h>//This library is needed only during debug
 
 Daruin::Daruin(void)
@@ -33,6 +34,7 @@ Daruin::Daruin(void)
     changeState = false;
 
     buildWindow = new BuildWindow();
+    settingWindow = new SettingWindow();
 
     setCentralWidget(textEditor);
     menubar->addMenu(fileMenu);
@@ -56,6 +58,7 @@ Daruin::Daruin(void)
     connect(menubar->addAction("upload") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("board") , SIGNAL(triggered()) , this , SLOT(call()));
     connect(menubar->addAction("serial monitor") , SIGNAL(triggered()) , this , SLOT(call()));
+    connect(menubar->addAction("Setting"),SIGNAL(triggered()),this,SLOT(showSettingWindow()));
 
     connect(textEditor , SIGNAL(textChanged()) , this , SLOT(change()));
     connect(yesButton , SIGNAL(clicked()) , this , SLOT(openFileWithSave()));
@@ -182,4 +185,8 @@ void Daruin::saveFileWithName(void)
 
 void Daruin::callBuilder(void){
     buildWindow->show();
+}
+
+void Daruin::showSettingWindow(void){
+    settingWindow->show();
 }

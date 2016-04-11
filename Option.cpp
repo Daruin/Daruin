@@ -24,7 +24,7 @@ void Option::write(QJsonObject &json) const
 
 void Option::save(QUrl url)
 {
-    arduinoDirectoryURL = url;
+    arduinoDirectoryURL = &url;
     saveSetting();
 }
 
@@ -38,7 +38,7 @@ bool Option::loadSetting(void)
 
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
 
-    read(loadDoc);
+    read(loadDoc.object());
     return true;
 }
 
@@ -49,9 +49,9 @@ bool Option::saveSetting(void)
         return false;
     }
 
-    QJsonObject optionObejct;
+    QJsonObject optionObject;
     write(optionObject);
-    QJsonDocument saveDoc(optionObejct);
+    QJsonDocument saveDoc(optionObject);
     saveFile.write(saveDoc.toJson());
     return true;
 }

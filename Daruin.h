@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "buildwindow.h"
+#include "SettingWindow.h"
 
 class QTextEdit;
 class QMenuBar;
@@ -17,6 +18,7 @@ class QFile;
 class QTextStream;
 class QFileDialog;
 class BuildWindow;
+class SettingWindow;
 
 class Daruin : public QMainWindow
 {
@@ -39,6 +41,7 @@ public slots:
     void saveFile(void);
     void saveFileWithName(void);
     void callBuilder(void);
+    void showSettingWindow(void);
 
 private:
     void displayAskSaveDialog(void);
@@ -60,6 +63,7 @@ private:
     QPushButton* cancelButton;
     QFile* currentFile;
     BuildWindow* buildWindow;
+    SettingWindow* settingWindow;
 
     char fileState;
     bool changeState;
