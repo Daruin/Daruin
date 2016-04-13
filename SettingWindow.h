@@ -2,6 +2,7 @@
 #define SETTINGWINDOW_H
 
 #include <QWidget>
+#include "Option.h"
 
 class QPushButton;
 class QFileDialog;
@@ -13,9 +14,9 @@ class SettingWindow : public QWidget
     Q_OBJECT
 public:
     SettingWindow();
-
+    Option *option;
 public slots:
-    void setArduinoDirectory();
+    void setArduinoDirectory(QUrl);
 private:
     QPushButton* ADSettingButton;
     QFileDialog* ADDialog;
